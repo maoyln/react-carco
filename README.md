@@ -191,3 +191,6 @@ EXTEND_ESLINT=true
 
 测试打包： yarn build:development 和  yarn build:production 正常
 截图在微信
+
+
+后续需要用`react-app-rewired` 改成 `craco`
