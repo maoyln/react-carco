@@ -17,3 +17,18 @@
 ```
 npx create-react-app my-app-ts --template typescript
 ```
+
+
+#### 使用eject弹出webpack配置
+```
+npm run eject
+```
+
+#### 启动
+
+```
+yarn start
+```
+本地访问：http://localhost:3001/
+
+
