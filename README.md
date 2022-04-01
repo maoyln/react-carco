@@ -68,7 +68,7 @@ const setWebpackOutput = () => (config) => {
     ...config.output,
     library: 'myl-[name]',
     libraryTarget: 'umd',
-    jsonpFunction: 'webpackJsonp_infra-est-web'
+    jsonpFunction: 'webpackJsonp_myl'
   };
 
   if (process.env.REACT_APP_ENV === 'development' || process.env.REACT_APP_ENV === 'test') {

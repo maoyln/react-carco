@@ -9,9 +9,9 @@ const path = require('path');
 const setWebpackOutput = () => (config) => {
   config.output = {
     ...config.output,
-    library: 'infra-est-web-[name]',
+    library: 'maoyl-[name]',
     libraryTarget: 'umd',
-    jsonpFunction: 'webpackJsonp_infra-est-web'
+    jsonpFunction: 'webpackJsonp_maoyl'
   };
 
   if (process.env.REACT_APP_ENV === 'development' || process.env.REACT_APP_ENV === 'test') {
@@ -48,7 +48,7 @@ module.exports = {
       config.headers = config.headers || {};
       // config.proxy = {
       //   '/infra-bi/infra-bi-service/': {
-      //     target: 'https://aecloud-test.glodon.com',
+      //     target: 'https://xxxxxxxx',
       //     changeOrigin: true,
       //     secure: true
       //   }
