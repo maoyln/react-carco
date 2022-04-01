@@ -145,3 +145,49 @@ npm install babel-plugin-import --save-dev
 
 此时可以正常运行
 
+
+
+### 配置多环境
+
+在根目录下添加.env.development文件
+```
+REACT_APP_PLATFORM_URL=https://www.dev.com
+PUBLIC_URL=/maoyl/
+SKIP_PREFLIGHT_CHECK=true
+EXTEND_ESLINT=true
+```
+在根目录下添加.env.production文件
+```
+REACT_APP_PLATFORM_URL=https://www.pro.com
+PUBLIC_URL=/maoyl/
+SKIP_PREFLIGHT_CHECK=true
+EXTEND_ESLINT=true
+```
+
+在根目录下添加.env.test文件
+```
+REACT_APP_PLATFORM_URL=https://www.test.com
+PUBLIC_URL=/maoyl/
+SKIP_PREFLIGHT_CHECK=true
+EXTEND_ESLINT=true
+```
+
+修改package.json配置
+```
+  "scripts": {
+    "start-ts": "react-app-rewired start",
+    "start": "sh -ac '. ./.env.development; PORT=3003 npm run start-ts'",
+    "build-ts": "react-app-rewired build",
+    "build": "sh -ac '. ./.env.${REACT_APP_ENV};npm run build-ts'",
+    "build:development": "REACT_APP_ENV=development npm run build",
+    "build:test": "REACT_APP_ENV=test npm run build",
+    "build:production": "REACT_APP_ENV=production npm run build",
+    "test": "react-app-rewired test --env=jsdom"
+  },
+```
+
+此时正常运行http://localhost:3003/maoyl
+截图在微信
+
+测试打包： yarn build:development 和  yarn build:production 正常
+截图在微信
