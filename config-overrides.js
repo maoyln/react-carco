@@ -9,9 +9,9 @@ const path = require('path');
 const setWebpackOutput = () => (config) => {
   config.output = {
     ...config.output,
-    library: 'maoyl-[name]',
+    library: 'myl-[name]',
     libraryTarget: 'umd',
-    jsonpFunction: 'webpackJsonp_maoyl'
+    // jsonpFunction: 'webpackJsonp_myl'
   };
 
   if (process.env.REACT_APP_ENV === 'development' || process.env.REACT_APP_ENV === 'test') {
@@ -24,10 +24,12 @@ const setWebpackOutput = () => (config) => {
 
 module.exports = {
   webpack: override(
+    // 添加别名
     addWebpackAlias({
       '@': path.resolve(__dirname, 'src'),
       pages: path.resolve(__dirname, 'src/pages')
     }),
+    // 按需加载
     fixBabelImports('import', {
       libraryName: 'antd',
       libraryDirectory: 'es',
