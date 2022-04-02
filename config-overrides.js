@@ -35,13 +35,13 @@ module.exports = {
       libraryDirectory: 'es',
       style: true
     }),
-    // addLessLoader({
-    //   javascriptEnabled: true,
-    //   modifyVars: {
-    //     '@hack': `true; @import "assets/styles/myCustomizedAntdTheme.less";`
-    //   },
-    //   paths: [path.resolve(__dirname, 'src')]
-    // }),
+    addLessLoader({
+      javascriptEnabled: true,
+      modifyVars: {
+        '@hack': `true; @import "assets/styles/myCustomizedAntdTheme.less";`
+      },
+      paths: [path.resolve(__dirname, 'src')]
+    }),
     setWebpackOutput() // 这才是正解，如果报错，只能说是 publicPath 有问题，因为如果你设置了 %publicUrl%，你需要加上publicUrl
   ),
   devServer: (configFunc) => {
