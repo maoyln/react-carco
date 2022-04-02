@@ -194,3 +194,163 @@ EXTEND_ESLINT=true
 
 
 后续需要用`react-app-rewired` 改成 `craco`
+
+
+## craco使用
+
+#### 安装插件：
+```
+$ yarn add @craco/craco
+
+# OR
+
+$ npm install @craco/craco --save
+```
+
+#### craco.config.js在根目录下创建一个文件并配置 CRACO：
+
+```
+my-app
+├── node_modules
+├── craco.config.js
+└── package.json
+```
+
+### craco.config.js配置
+```
+const path = require('path');
+const TersetPlugin = require('terser-webpack-plugin');
+const isProduction = process.env.REACT_APP_ENV === 'production';
+const isDevelopment = process.env.REACT_APP_ENV === 'development';
+const isTest = process.env.REACT_APP_ENV === 'test';
+// 修改output配置
+const setWebpackOutput = (config) => {
+  config.output = {
+    ...config.output,
+    library: 'myl-[name]',
+    libraryTarget: 'umd',
+    jsonpFunction: 'webpackJsonp_myl'
+  };
+
+  if (isDevelopment || isTest) {
+    config.output.publicPath = process.env.PUBLIC_URL;
+  } else {
+    // config.output.publicPath = process.env.PUBLIC_URL;
+  }
+};
+// 修改devtool(sourceMap)配置
+const setWebpackDevtool = (config) => {
+  if (isProduction) {
+    config.devtool = false;
+  } else {
+    config.devtool = 'source-map';
+  }
+};
+module.exports = {
+  webpack: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      pages: path.resolve(__dirname, 'src/pages')
+    },
+    plugins: {
+      add: [
+        isProduction
+          ? new TersetPlugin({
+              terserOptions: {
+                compress: {
+                  drop_debugger: true,
+                  pure_funcs: ['console.log']
+                }
+              }
+            })
+          : undefined
+      ].filter((item) => item)
+    },
+    configure: (webpakcConfig) => {
+      // 这里可以获取webpack-config 然后进行修改
+      setWebpackOutput(webpakcConfig);
+      setWebpackDevtool(webpakcConfig);
+      // ! 放开下面2行注释 不会走编译 只会打印webpakcConfig值
+      // console.log(webpakcConfig)
+      // process.exit(0)
+      return webpakcConfig;
+    }
+  }
+};
+```
+
+#### 安装terser-webpack-plugin
+
+```
+$ yarn add terser-webpack-plugin
+
+# OR
+
+$ npm install terser-webpack-plugin --save
+```
+
+#### 更新文件部分中react-scripts的现有调用以使用CLI：scriptspackage.jsoncraco
+
+<!-- 更改前 -->
+```
+  "scripts": {
+    "start-ts": "react-app-rewired start",
+    "start": "sh -ac '. ./.env.development; PORT=3003 npm run start-ts'",
+    "build-ts": "react-app-rewired build",
+    "build": "sh -ac '. ./.env.${REACT_APP_ENV};npm run build-ts'",
+    "build:development": "REACT_APP_ENV=development npm run build",
+    "build:test": "REACT_APP_ENV=test npm run build",
+    "build:production": "REACT_APP_ENV=production npm run build",
+    "test": "react-app-rewired test --env=jsdom"
+  },
+```
+
+<!-- 更改后 -->
+```
+  "scripts": {
+    "start-ts": "craco start",
+    "start": "sh -ac '. ./.env.development; PORT=3003 npm run start-ts'",
+    "build-ts": "craco build",
+    "build": "sh -ac '. ./.env.${REACT_APP_ENV};npm run build-ts'",
+    "build:development": "REACT_APP_ENV=development npm run build",
+    "build:test": "REACT_APP_ENV=test npm run build",
+    "build:production": "REACT_APP_ENV=production npm run build",
+    "test": "craco test --env=jsdom"
+  },
+```
+
+## 使用 craco-less 进行 antd 主题配置
+
+### 安装依赖
+
+```
+    "less": "^3.13.1",
+    "less-loader": "5.0.0",
+    "craco-less": "^1.20.0",
+```
+
+推荐安装以上三个版本，使用的都是 webpack4.x 和项目使用的 react-script 版本相匹配。
+
+### 添加 craco-config 配置
+
+```javascript
+const CracoLessPlugin = require('craco-less');
+
+module.exports ={
+    webpack:...,
+// 添加plugins配置项
+    plugins: [
+    {
+      plugin: CracoLessPlugin,
+      options: {
+        lessLoaderOptions: {
+          lessOptions: {
+            modifyVars: { '@hack': `true; @import "assets/styles/myCustomizedAntdTheme.less";` },
+            javascriptEnabled: true
+          }
+        }
+      }
+    }
+  ]
+}
+```

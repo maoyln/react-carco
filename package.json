@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.16.0",
+    "@craco/craco": "^6.4.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.16.3",
@@ -57,7 +58,7 @@
     "source-map-loader": "^3.0.0",
     "style-loader": "^3.3.1",
     "tailwindcss": "^3.0.2",
-    "terser-webpack-plugin": "^5.2.5",
+    "terser-webpack-plugin": "^5.3.1",
     "typescript": "^4.6.3",
     "web-vitals": "^2.1.4",
     "webpack": "^5.64.4",
@@ -66,14 +67,14 @@
     "workbox-webpack-plugin": "^6.4.1"
   },
   "scripts": {
-    "start-ts": "react-app-rewired start",
+    "start-ts": "craco start",
     "start": "sh -ac '. ./.env.development; PORT=3003 npm run start-ts'",
-    "build-ts": "react-app-rewired build",
+    "build-ts": "craco build",
     "build": "sh -ac '. ./.env.${REACT_APP_ENV};npm run build-ts'",
     "build:development": "REACT_APP_ENV=development npm run build",
     "build:test": "REACT_APP_ENV=test npm run build",
     "build:production": "REACT_APP_ENV=production npm run build",
-    "test": "react-app-rewired test --env=jsdom"
+    "test": "craco test --env=jsdom"
   },
   "eslintConfig": {
     "extends": [
@@ -150,8 +151,8 @@
     ]
   },
   "devDependencies": {
-    "less": "^4.1.2",
-    "less-loader": "^10.2.0",
-    "react-app-rewired": "^2.2.1"
+    "craco-less": "^1.20.0",
+    "less": "^3.13.1",
+    "less-loader": "^5.0.0"
   }
 }
